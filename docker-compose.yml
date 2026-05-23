@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:6
+    container_name: carverse-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=carverse
+    volumes:
+      - mongodb-data:/data/db
+
+volumes:
+  mongodb-data:

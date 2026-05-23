@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0b0b0c;
+  --foreground: #f3f4f6;
+  
+  --color-matte-black: #0b0b0c;
+  --color-gunmetal: #18181c;
+  --color-carbon-gray: #2a2a30;
+  --color-electric-blue: #00d2ff;
+  --color-neon-red: #ff0055;
+}
+
+@theme {
+  --color-matte-black: var(--color-matte-black);
+  --color-gunmetal: var(--color-gunmetal);
+  --color-carbon-gray: var(--color-carbon-gray);
+  --color-electric-blue: var(--color-electric-blue);
+  --color-neon-red: var(--color-neon-red);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), sans-serif;
+  overflow-x: hidden;
+}
+
+/* Premium utilities */
+.glass {
+  background: rgba(24, 24, 28, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-glow-blue {
+  background: rgba(24, 24, 28, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 210, 255, 0.25);
+  box-shadow: 0 0 15px rgba(0, 210, 255, 0.1);
+}
+
+.glass-glow-red {
+  background: rgba(24, 24, 28, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 0, 85, 0.25);
+  box-shadow: 0 0 15px rgba(255, 0, 85, 0.1);
+}
+
+.glass-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.glass-hover:hover {
+  background: rgba(24, 24, 28, 0.85);
+  border-color: rgba(0, 210, 255, 0.3);
+  box-shadow: 0 0 25px rgba(0, 210, 255, 0.15);
+}
+
+.glass-hover-red {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.glass-hover-red:hover {
+  background: rgba(24, 24, 28, 0.85);
+  border-color: rgba(255, 0, 85, 0.35);
+  box-shadow: 0 0 25px rgba(255, 0, 85, 0.15);
+}
+
+/* Custom Scrollbar for premium feel */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0b0c;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2a30;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ff0055;
+}
+
+/* Keyframes for glow animations */
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.6;
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.2);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 30px rgba(0, 210, 255, 0.4);
+  }
+}
+
+.pulse-glow-blue {
+  animation: pulseGlow 3s infinite ease-in-out;
+}
+
