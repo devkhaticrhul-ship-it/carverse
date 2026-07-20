@@ -2,12 +2,11 @@ import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
 import Vehicle from '@/models/Vehicle';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     await connectToDatabase();
     
-    // We should await params as per Next.js 15+ patterns, though currently we are on Next 16
-    const { id } = params;
+    const { id } = await params;
     
     const vehicle = await Vehicle.findById(id).populate('brand').lean();
     
@@ -20,8 +19,9 @@ export async function GET(request: Request, { params }: { params: { id: string }
     console.error('GET /api/vehicles/[id] error:', err);
     
     // Fallback sample data to avoid crashes if DB isn't fully seeded yet
+    const { id } = await params;
     const sample = {
-      _id: params.id,
+      _id: id,
       name: 'Sample Car Detail',
       brand: null,
       category: 'Hypercar',
