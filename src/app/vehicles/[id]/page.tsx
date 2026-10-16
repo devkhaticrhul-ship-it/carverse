@@ -5,32 +5,38 @@ import { ChevronLeft, Flame, Gauge, Navigation, Zap, Calendar, Settings } from '
 import VehicleDna from '@/components/VehicleDna';
 import GarageButton from '@/components/GarageButton';
 
+import { connectToDatabase } from '@/lib/mongodb';
+import Vehicle from '@/models/Vehicle';
+import '@/models/Brand';
+import mongoose from 'mongoose';
+
 async function getVehicle(id: string) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
   try {
-    const res = await fetch(`${baseUrl}/api/vehicles/${id}`, { cache: 'no-store' });
-    if (!res.ok) {
-      if (res.status === 404) return null;
-      throw new Error('Failed to fetch vehicle');
+    await connectToDatabase();
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return null;
     }
-    return res.json();
+    const vehicle = await Vehicle.findById(id).populate('brand').lean();
+    if (!vehicle) return null;
+    return JSON.parse(JSON.stringify(vehicle));
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching vehicle:', error);
     return null;
   }
 }
 
-export default async function VehicleDetailsPage({ params }: { params: { id: string } }) {
-  // Await params if needed in Next 15+, but for Next 13/14 it's okay sync, although we can just await it safely
-  const { id } = await params;
+export default async function VehicleDetailsPage({ params }: { params: Promise<{ id: string }> | { id: string } }) {
+  const resolvedParams = await params;
+  const id = resolvedParams.id;
   const vehicle = await getVehicle(id);
 
   if (!vehicle) {
     notFound();
   }
 
-  // Format price (assuming stored in USD cents)
-  const priceUSD = (vehicle.price / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+  // Format price
+  const priceVal = vehicle.priceUSD || vehicle.price || 0;
+  const priceUSD = priceVal.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 
   return (
     <div className="min-h-screen bg-[#0b0b0c] text-white pt-24 pb-16">
