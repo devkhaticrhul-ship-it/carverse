@@ -81,6 +81,13 @@ useEffect(() => {
         fuelType: v.specs?.fuelType ?? v.fuelType ?? '',
         transmission: v.specs?.transmission ?? v.transmission ?? '',
         image: v.imageUrl ?? v.image ?? '',
+        year: v.year ?? 2024,
+        torque: v.specs?.torque ?? v.torque ?? 0,
+        bodyType: v.category ?? '',
+        engine: v.specs?.engine ?? v.engine ?? 'V8',
+        mileage: v.specs?.mileage ?? v.mileage ?? 'N/A',
+        description: v.description ?? '',
+        features: v.features ?? [],
         dna: v.dna ?? {
           performance: 0,
           luxury: 0,
